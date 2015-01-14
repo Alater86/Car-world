@@ -1,0 +1,72 @@
+package edu.csc150;
+
+import java.util.Random;
+import greenfoot.Actor;
+
+public class Car extends Actor {
+	
+	private enum State{
+		IN, NEAR, FAR;
+		
+		//State state = State.FAR;
+	}
+
+	Random random = new Random();
+	public Car(){	
+		
+	int randomColor = random.nextInt(4);
+	
+	switch (randomColor){
+	
+			case 0: {
+				this.setImage("images/topCarBlue.png");
+				break;
+			}
+			case 1:{
+				this.setImage("images/topCarPurple.png");
+				break;
+			}
+			case 2: {
+				this.setImage("images/topCarYellow.png");
+				break;
+			}
+			case 3: {
+				this.setImage("images/topCarRed.png");
+				break;
+			}
+		}
+	}
+
+	public void act(){
+		move(1);
+		fixWrap();	
+	}
+	
+	public void fixWrap(){
+		if (isAtEdge()){
+			switch(this.getRotation()){
+			case 270:{		
+				this.setLocation(getX(), TrafficWorld.WORLD_HEIGHT);
+				break;
+			}
+			case 180:{
+				this.setLocation(TrafficWorld.WORLD_WIDTH, getY());
+				break;
+			}
+			case 90:{
+				this.setLocation(getX(), 0);
+				break;
+			}
+			case 0:{
+				this.setLocation(0, getY());
+				break;
+			}
+			}	
+		}
+		
+		
+	}
+	
+	
+	
+}
