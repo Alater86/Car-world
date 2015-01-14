@@ -1,0 +1,69 @@
+package edu.csc150;
+
+import java.util.Random;
+import java.awt.Color;
+import greenfoot.World;
+
+public class TrafficWorld extends World {
+	static int WORLD_WIDTH = 1000;
+	static int WORLD_HEIGHT = 750;
+	private static final int ROAD_WIDTH = 50;
+	int NUMBER_OF_VERT_ROADS = 7;
+	int NUMBER_OF_HORZ_ROADS = 5;
+	Random randomcar = new Random();
+	
+	public TrafficWorld(){
+		super (WORLD_WIDTH, WORLD_HEIGHT, 1);
+		this.getBackground().setColor(Color.GREEN);
+		this.getBackground().fill();
+
+		//roads going north to south
+		for (int NS = 0; NS < NUMBER_OF_VERT_ROADS; NS++){
+			Road road = new Road(ROAD_WIDTH, WORLD_HEIGHT);
+			int POS = (NS * (ROAD_WIDTH + ( (WORLD_WIDTH - (NUMBER_OF_VERT_ROADS * ROAD_WIDTH)) / (NUMBER_OF_VERT_ROADS - 1)))) + (ROAD_WIDTH / 2); 
+			this.addObject(road, POS, (WORLD_HEIGHT/2));
+		}
+		//roads going east to west
+		for (int EW = 0; EW < NUMBER_OF_HORZ_ROADS; EW++){
+			Road road = new Road(WORLD_WIDTH, ROAD_WIDTH);
+			int POS = (EW * (ROAD_WIDTH + ( (WORLD_HEIGHT - (NUMBER_OF_HORZ_ROADS * ROAD_WIDTH)) / (NUMBER_OF_HORZ_ROADS - 1)))) + (ROAD_WIDTH / 2); 
+			this.addObject(road, (WORLD_WIDTH/2), POS);
+		}
+		//top to bottom
+		for (int carDown = 0; carDown < NUMBER_OF_VERT_ROADS; carDown++){
+			int ns = randomcar.nextInt(WORLD_WIDTH + 1);
+			int POS = (((carDown * (ROAD_WIDTH + ( (WORLD_WIDTH - (NUMBER_OF_VERT_ROADS * ROAD_WIDTH)) / (NUMBER_OF_VERT_ROADS - 1)))) + (ROAD_WIDTH / 2)) - 12); 
+			createCar(Direction.SOUTH, POS, ns);
+			
+		}
+		//bottom to top
+		for (int carUp = 0; carUp < NUMBER_OF_VERT_ROADS; carUp++){
+			int sn = randomcar.nextInt(WORLD_WIDTH + 1);
+			int POS = (((carUp * (ROAD_WIDTH + ( (WORLD_WIDTH - (NUMBER_OF_VERT_ROADS * ROAD_WIDTH)) / (NUMBER_OF_VERT_ROADS - 1)))) + (ROAD_WIDTH / 2)) + 12); 
+			createCar(Direction.NORTH, POS, sn);
+				
+		}
+		//right to left
+		for (int carLeft = 0; carLeft < NUMBER_OF_HORZ_ROADS; carLeft++){
+			int ew = randomcar.nextInt(WORLD_HEIGHT + 1);
+			int POS = (((carLeft * (ROAD_WIDTH + ( (WORLD_HEIGHT - (NUMBER_OF_HORZ_ROADS * ROAD_WIDTH)) / (NUMBER_OF_HORZ_ROADS - 1)))) + (ROAD_WIDTH / 2)) - 12);
+			createCar(Direction.WEST, ew, POS);
+		
+		}
+		//left to right
+		for (int carRight = 0; carRight < NUMBER_OF_HORZ_ROADS; carRight++){
+			int we = randomcar.nextInt(WORLD_HEIGHT + 1);
+			int POS = (((carRight * (ROAD_WIDTH + ( (WORLD_HEIGHT - (NUMBER_OF_HORZ_ROADS * ROAD_WIDTH)) / (NUMBER_OF_HORZ_ROADS - 1)))) + (ROAD_WIDTH / 2)) + 12);
+			createCar(Direction.EAST, we, POS);
+		}	
+	}
+	
+	public void createCar(Direction diratction, int x, int y){
+		Car car = new Car();
+		this.addObject(car, x, y);
+		car.setRotation(diratction.getRotation());
+
+		
+	}
+	
+}
